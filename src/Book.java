@@ -11,12 +11,14 @@ public class Book {
   }
 	  
   public Book(String newAuthor,double newPrice,String newTitle,String newDescription,int inStock){
-	  setAuthor(newAuthor);
+	  try{setAuthor(newAuthor);
 	  setPrice(newPrice);
 	  setTitle(newTitle);
 	  setDescription(newDescription);
 	  setStock(inStock);
-	  setIsInStock();
+	  setIsInStock();}catch(Exception e){
+		  System.out.println("Error Occurred!");
+	  }
   }
   public String getAuthor(){
 	  return author;
