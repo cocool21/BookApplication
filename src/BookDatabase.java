@@ -1,5 +1,8 @@
 
 public class BookDatabase {
+	public BookDatabase(){
+		
+	}
  public Book findBook(String sku){
 	 Book newBook;	
 	 sku.toLowerCase();
@@ -21,12 +24,12 @@ public class BookDatabase {
 					"Fun with Python", 92);
     	 break;
      case "zombie1005":
-    	 newBook = new Book("Kathy Sierra and Bert Bates", 47.5, "Head First Java",
-					"Easy to read Java workbook", 100);
+    	 newBook = new Book("Simon Monk", 16.5, "The Maker's Guide to the Zombie Apocalypse",
+					"Defend Your Base with Simple Circuits, Arduino and Raspberry Pi", 100);
     	 break;
      case "rasp1006":
-    	 newBook = new Book("Kathy Sierra and Bert Bates", 47.5, "Head First Java",
-					"Easy to read Java workbook", 100);
+    	 newBook = new Book("Donald Norris", 14.75, "Raspberry Pi Projects for the Evil Genius",
+					"A dozen fiendishly fun prjects for the Raspberry Pi!", 100);
     	 break;
      default:System.out.println("Book Not Found");
     	 newBook= new Book("",0,"","",0);

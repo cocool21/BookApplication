@@ -62,13 +62,12 @@ public class Book {
   }
     public String getDisplayText(){
    
-		return author+"  "+title+"  "+description;
+		return "Author: "+author+"  Title: "+title+"  Description: "+description;
     }
     public double getCost(int number){
     	if(number<=stock){
 		return (number*price);
 		}else{
-			System.out.println("Stock is below the number you requested");
 			return stock*price;
 			
 		}
