@@ -42,7 +42,7 @@ public class Book {
   public void setDescription(String value){
 	  this.description=value;
   }
-  public double getStock(){
+  public int getStock(){
 	  return stock;
   }
   public void setStock(int value){
