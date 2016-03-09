@@ -1,20 +1,22 @@
 
 public class Book {
-  private static String author="";
-  private static double price=0;
-  private static String title="";
-  private static String description="";
-  private static boolean isInStock=false;
+  private String author="";
+  private double price=0;
+  private String title="";
+  private String description="";
+  private boolean isInStock=false;
+  private int stock=0;
   public Book(){
 	  
   }
 	  
-  public Book(String newAuthor,double newPrice,String newTitle,String newDescription,boolean inStock){
+  public Book(String newAuthor,double newPrice,String newTitle,String newDescription,int inStock){
 	  setAuthor(newAuthor);
 	  setPrice(newPrice);
 	  setTitle(newTitle);
 	  setDescription(newDescription);
-	  setIsInStock(inStock);
+	  setStock(inStock);
+	  setIsInStock();
   }
   public String getAuthor(){
 	  return author;
@@ -40,14 +42,34 @@ public class Book {
   public void setDescription(String value){
 	  this.description=value;
   }
+  public double getStock(){
+	  return stock;
+  }
+  public void setStock(int value){
+	  this.stock=value;
+  }
   public boolean getIsInStock(){
 	  return isInStock;
   }
-  public void setIsInStock(boolean value){
-	  this.isInStock=value;
+  public void setIsInStock(){
+	  if(stock==0){
+	  this.isInStock=false;
+	  }else{
+		  this.isInStock=true;  
+	  }
   }
-    public static String getDisplayText(){
+    public String getDisplayText(){
    
 		return author+"  "+title+"  "+description;
+    }
+    public double getCost(int number){
+    	if(number<=stock){
+		return (number*price);
+		}else{
+			System.out.println("Stock is below the number you requested");
+			return stock*price;
+			
+		}
+    	
     }
 }
