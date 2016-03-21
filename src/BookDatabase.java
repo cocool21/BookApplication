@@ -1,41 +1,131 @@
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class BookDatabase {
+	private Connection con = null;
+	private Statement stmt = null;
+	private ResultSet rs = null;
 	public BookDatabase(){
 		
 	}
+	public void Connect(){
+		 try{
+				Class.forName("oracle.jdbc.driver.OracleDriver");
+				con = DriverManager.getConnection("jdbc:oracle:thin:ora1/ora1@localhost:1521:orcl");
+				}catch(SQLException e) {
+					e.printStackTrace();
+				}catch (ClassNotFoundException e) {
+					e.printStackTrace();
+			} finally {
+				}
+	 }
  public Book findBook(String sku){
-	 Book newBook;	
+	 Book newBook=new Book();	
 	 sku.toLowerCase();
-	 switch (sku){ 
-		case "java1001":
-			newBook = new Book("Kathy Sierra and Bert Bates", 47.5, "Head First Java",
-					"Easy to read Java workbook", 100);
-			break;
-     case "java1002":
-    	 newBook = new Book("Bruce Eckel", 20, "Thinking in Java",
-					"Details about Java under the hood", 80);
-    	 break;
-     case "orcl1003":
-    	 newBook = new Book("Jeanne Boyarsky", 45, "OCP: Oracle Certified Professional Java SE",
-					"Everything you need to know in one place", 70);
-    	 break;
-     case "python1004":
-    	 newBook = new Book("Al Sweigart", 10.5, "Automate the Boring Stuff with Python",
-					"Fun with Python", 92);
-    	 break;
-     case "zombie1005":
-    	 newBook = new Book("Simon Monk", 16.5, "The Maker's Guide to the Zombie Apocalypse",
-					"Defend Your Base with Simple Circuits, Arduino and Raspberry Pi", 100);
-    	 break;
-     case "rasp1006":
-    	 newBook = new Book("Donald Norris", 14.75, "Raspberry Pi Projects for the Evil Genius",
-					"A dozen fiendishly fun prjects for the Raspberry Pi!", 100);
-    	 break;
-     default:System.out.println("Book Not Found");
-    	 newBook= new Book("",0,"","",0);
-     break;}
+		String sql = "select * from books where sku='"+sku+"'";
+		try{
+			Connect();
+			stmt = con.createStatement();
+			rs = stmt.executeQuery(sql);
+			while(rs.next()){
+				newBook.setSku(rs.getString("sku"));
+				newBook.setTitle(rs.getString("title"));
+				newBook.setAuthor(rs.getString("author"));
+				newBook.setDescription(rs.getString("description"));
+				newBook.setPrice(rs.getDouble("price"));
+				//System.out.println(rs.getString(2));
+			}
+			}catch (SQLException e) {
+				e.printStackTrace();
+			}
+		finally {
+			try {
+				rs.close();
+				stmt.close();
+				con.close();
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+		}
 	 return newBook;
  }
+ 
+ public void addBook(Book myBook){
+	Connect();
+		String add = "insert into books "+"(sku,title,author,description,price) "+"values (?,?,?,?,?)";
+		try{
+			Connect();
+			PreparedStatement ps=con.prepareStatement(add);
+			ps.setString(1, myBook.getSku());
+			ps.setString(2, myBook.getTitle());
+			ps.setString(3, myBook.getAuthor());
+			ps.setString(4, myBook.getDescription());
+			ps.setDouble(5, myBook.getPrice());
+			int count=ps.executeUpdate();
+			}catch (SQLException e) {
+				e.printStackTrace();
+			}
+		finally {
+			try {
+				rs.close();
+				stmt.close();
+				con.close();
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+		}
 	
-
+ }
+ public void updateBook(Book myBook){
+		Connect();
+		   
+			String update = "update books "+"set title=?, author=?, description=?,price=?  "+"where sku = ?";
+			try{
+				Connect();
+				PreparedStatement ps=con.prepareStatement(update);
+				ps.setString(1, myBook.getTitle());
+				ps.setString(2, myBook.getAuthor());
+				ps.setString(3, myBook.getDescription());
+				ps.setDouble(4, myBook.getPrice());
+				ps.setString(5, myBook.getSku());
+			    int count=ps.executeUpdate();
+			    
+				}catch (SQLException e) {
+					e.printStackTrace();
+				}
+			finally {
+				try {
+					stmt.close();
+					con.close();
+				}catch(SQLException e){
+					e.printStackTrace();
+				}
+			}
+		
+	 }
+ public void deleteBook(Book myBook){
+		Connect();
+			String delete = "delete from books "+"where sku = ?";
+			try{
+				Connect();
+				PreparedStatement ps=con.prepareStatement(delete);
+				ps.setString(1, myBook.getSku());
+				int count=ps.executeUpdate();
+				}catch (SQLException e) {
+					e.printStackTrace();
+				}
+			finally {
+				try {
+					stmt.close();
+					con.close();
+				}catch(SQLException e){
+					e.printStackTrace();
+				}
+			}
+		
+	 }
 }

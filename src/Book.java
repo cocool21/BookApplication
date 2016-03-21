@@ -1,4 +1,4 @@
-
+  
 public class Book {
   private String author="";
   private double price=0;
@@ -6,7 +6,16 @@ public class Book {
   private String description="";
   private boolean isInStock=false;
   private int stock=0;
-  public Book(){
+  private String sku="";
+  public String getSku() {
+	return sku;
+}
+
+public void setSku(String sku) {
+	this.sku = sku;
+}
+
+public Book(){
 	  
   }
 	  
@@ -60,9 +69,10 @@ public class Book {
 		  this.isInStock=true;  
 	  }
   }
+ 
     public String getDisplayText(){
    
-		return "Author: "+author+"  Title: "+title+"  Description: "+description;
+		return "Author: "+author+"\nTitle: "+title+"\nDescription: "+description+"\nPrice: "+price;
     }
     public double getCost(int number){
     	if(number<=stock){
